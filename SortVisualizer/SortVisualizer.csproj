@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="AnimationTimer.cs" />
     <Compile Include="GeneratedArray.cs" />
+    <Compile Include="IteratorTimer.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

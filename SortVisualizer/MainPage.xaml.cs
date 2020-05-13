@@ -27,10 +27,6 @@ namespace SortVisualizer
     public sealed partial class MainPage : Page
     {
 
-        int count = 0;
-
-        GeneratedArray generatedArray;
-
         public MainPage()
         {
             this.InitializeComponent();
@@ -39,19 +35,18 @@ namespace SortVisualizer
         private void OnGenerateArrayClick(object sender, RoutedEventArgs e)
         {
             Button clickedButton = (Button) sender;
-            generatedArray = new GeneratedArray(100);
         }
 
-        private void createBars()
+        private void CreateBars(int[] genArray)
         {
-            Canvas.Children.Clear();
+            int[] array = genArray;
             double maxWidth = Canvas.Width;
             double maxHeight = Canvas.Height;
-            double barWidth = maxWidth / generatedArray.array.Length;
-            double heightIncrement = maxHeight / generatedArray.array.Length;
-            for (int i = 0; i < generatedArray.array.Length; i++)
+            double barWidth = maxWidth / array.Length;
+            double heightIncrement = maxHeight / array.Length;
+            for (int i = 0; i < array.Length; i++)
             {
-                double barHeight = (generatedArray.array[i] * heightIncrement);
+                double barHeight = (array[i] * heightIncrement);
                 var bar = new Rectangle();
                 Windows.UI.Color barColor = new Windows.UI.Color();
                 barColor.R = Convert.ToByte((barHeight / maxHeight) * 255);
@@ -67,23 +62,57 @@ namespace SortVisualizer
             }
         }
 
+        private void UpdateBars(int[] genArray)
+        {
+            int[] array = genArray;
+            double maxWidth = Canvas.Width;
+            double maxHeight = Canvas.Height;
+            double barWidth = maxWidth / array.Length;
+            double heightIncrement = maxHeight / array.Length;
+            UIElementCollection bars = Canvas.Children;
+            for (int i = 0; i < array.Length; i++)
+            {
+                Rectangle bar = (Rectangle)bars[i];
+                double barHeight = (array[i] * heightIncrement);
+                Windows.UI.Color barColor = new Windows.UI.Color();
+                barColor.R = Convert.ToByte((barHeight / maxHeight) * 255);
+                barColor.B = Convert.ToByte(((maxHeight - barHeight) / maxHeight) * 255);
+                barColor.A = 255;
+                bar.Fill = new SolidColorBrush(barColor);
+                bar.Stroke = new SolidColorBrush(barColor);
+                bar.Margin = new Thickness(i * barWidth, maxHeight - barHeight, 0, 0);
+                bar.Width = barWidth;
+                bar.Height = barHeight;
+            }
+        }
+
         private void OnBubbleSort(object sender, RoutedEventArgs e)
         {
+            GeneratedArray generatedArray = new GeneratedArray(128);
+            CreateBars(generatedArray.array);
+
             BubbleSort bubbleSort = new BubbleSort(generatedArray.array);
 
-            new AnimationTimer(Iterate, bubbleSort).Start();
+            new AnimationTimer(Render).Start();
+
+            new IteratorTimer(Iterate, bubbleSort).Start();
          
         }
 
-        public void Iterate(BubbleSort bubbleSort)
+        public int[] Iterate(BubbleSort bubbleSort)
         {
             if (bubbleSort.CanIterate())
             {
-                count += 1;
-                Debug.WriteLine(count);
-                generatedArray.array = bubbleSort.Iterate();
-                createBars();
+                return bubbleSort.Iterate();
+            } else
+            {
+                Debug.WriteLine(generatedArray);
             }
+        }
+
+        public void Render(int[] genArray)
+        {
+            UpdateBars(genArray);
         }
     }
 }

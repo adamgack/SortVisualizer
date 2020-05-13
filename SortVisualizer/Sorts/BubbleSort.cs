@@ -9,20 +9,13 @@ namespace SortVisualizer.Sorts
     public class BubbleSort : Iterator
     {
 
-        private int[] arrayToSort;
-
         private int innerCount = 0;
 
         private int outerCount = 0;
 
         private bool canIterate = true;
 
-        public BubbleSort(int[] arrayToSort)
-        {
-            this.arrayToSort = arrayToSort;
-        }
-
-        public int[] Iterate()
+        public int[] Iterate(int[] arrayToSort)
         {
             int t;
             while (outerCount <= arrayToSort.Length - 2)

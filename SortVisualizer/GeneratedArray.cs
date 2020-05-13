@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SortVisualizer
 {
-    class GeneratedArray
+    public class GeneratedArray
     {
 
         public int[] array;
