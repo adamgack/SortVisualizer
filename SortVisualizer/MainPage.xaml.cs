@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,6 +26,11 @@ namespace SortVisualizer
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        private void OnClick(object Sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine(new GeneratedArray(100));
         }
     }
 }
