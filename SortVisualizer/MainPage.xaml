@@ -9,7 +9,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Center" Margin="0,831,0,0" VerticalAlignment="Top" FontFamily="Segoe UI" Click="OnClick" AccessKey=""/>
+        <Button Content="Generate Array" HorizontalAlignment="Center" Margin="0,831,0,0" VerticalAlignment="Top" FontFamily="Segoe UI" Click="OnGenerateArrayClick" AccessKey=""/>
+        <Button Content="Play Bubble Sort " Margin="862,831,0,0" VerticalAlignment="Top" FontFamily="Segoe UI" Click="OnBubbleSort" AccessKey=""/>
         <Canvas Name="Canvas" HorizontalAlignment="Left" Height="658" Margin="135,50,0,0" VerticalAlignment="Top" Width="1225"/>
 
     </Grid>

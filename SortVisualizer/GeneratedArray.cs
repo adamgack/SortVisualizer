@@ -9,14 +9,14 @@ namespace SortVisualizer
     class GeneratedArray
     {
 
-        int[] array;
+        public int[] array;
 
         public GeneratedArray(int size)
         {
             this.array = GenerateArray(size);
         }
 
-        public int[] GenerateArray(int size)
+        private int[] GenerateArray(int size)
         {
             array = new int[size];
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SortVisualizer.Sorts;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -24,29 +26,32 @@ namespace SortVisualizer
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
+        int count = 0;
+
+        GeneratedArray generatedArray;
+
         public MainPage()
         {
             this.InitializeComponent();
         }
 
-        private void OnClick(object sender, RoutedEventArgs e)
+        private void OnGenerateArrayClick(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
-            clickedButton.Content = "Clicked";
-            int[] data = {5, 12, 9, 2, 16, 4, 14, 11, 1, 7, 13, 8, 10, 3, 15, 6};
-            createBars(data);
+            Button clickedButton = (Button) sender;
+            generatedArray = new GeneratedArray(100);
         }
 
-        private void createBars(int[] data)
+        private void createBars()
         {
             Canvas.Children.Clear();
             double maxWidth = Canvas.Width;
             double maxHeight = Canvas.Height;
-            double barWidth = maxWidth / data.Length;
-            double heightIncrement = maxHeight / data.Length;
-            for (int i = 0; i < data.Length; i++)
+            double barWidth = maxWidth / generatedArray.array.Length;
+            double heightIncrement = maxHeight / generatedArray.array.Length;
+            for (int i = 0; i < generatedArray.array.Length; i++)
             {
-                double barHeight = (data[i] * heightIncrement);
+                double barHeight = (generatedArray.array[i] * heightIncrement);
                 var bar = new Rectangle();
                 Windows.UI.Color barColor = new Windows.UI.Color();
                 barColor.R = Convert.ToByte((barHeight / maxHeight) * 255);
@@ -59,6 +64,25 @@ namespace SortVisualizer
                 bar.Margin = new Thickness(i * barWidth, maxHeight - barHeight, 0, 0);
                 bar.Width = barWidth;
                 bar.Height = barHeight;
+            }
+        }
+
+        private void OnBubbleSort(object sender, RoutedEventArgs e)
+        {
+            BubbleSort bubbleSort = new BubbleSort(generatedArray.array);
+
+            new AnimationTimer(Iterate, bubbleSort).Start();
+         
+        }
+
+        public void Iterate(BubbleSort bubbleSort)
+        {
+            if (bubbleSort.CanIterate())
+            {
+                count += 1;
+                Debug.WriteLine(count);
+                generatedArray.array = bubbleSort.Iterate();
+                createBars();
             }
         }
     }
